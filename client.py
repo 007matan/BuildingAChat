@@ -3,6 +3,7 @@ import socket
 import argparse
 import os
 import sys
+from messageProtocol import messageProtocol
 import tkinter as tk
 
 """
@@ -47,17 +48,17 @@ class Send(threading.Thread):
             print('{}: '.format(self.name), end='')
             sys.stdout.flush()
             message = sys.stdin.readline().strip()
-
+            encode_message = messageProtocol.encode(message)
             # if we type "Quit" we leave the chatroom
 
             if message == "Quit":
-                self.sock.sendall('Sever: {} has left the chat.'.format(self.name).encode('ascii'))
+                self.sock.sendall('{} Sever: {} has left the chat.'.format(messageProtocol.SYS_MSG, self.name).encode('ascii'))
                 break
 
             # send message to server for broadcasting
 
             else:
-                self.sock.sendall('{}: {} '.format(self.name, message).encode('ascii'))
+                self.sock.sendall('{}: {} '.format(self.name, encode_message).encode('ascii'))
 
         print('\nQuitting...')
         self.sock.close()
@@ -102,7 +103,6 @@ class Receive(threading.Thread):
 
          while True:
              message = self.sock.recv(1024).decode('ascii')
-
              if message:
 
                  if self.messages:
@@ -167,7 +167,12 @@ class Client:
 
         print ('successfully connected to {}:{}\n'.format(self.host, self.port))
 
-        self.name = input('Your name: \n')
+
+        username  = input('Your name: \n')
+        while " " in username:
+            print("Forbidden name {} - Name must not include space".format(username))
+            username = input('Your name: \n')
+        self.name = username
 
         print('Welcome, {}! Getting ready to send and receive messages...'.format(self.name))
 
@@ -181,7 +186,7 @@ class Client:
 
         receive.start()
 
-        self.sock.sendall('Server: {} has joined the chat. say Hi!'.format(self.name).encode('ascii'))
+        self.sock.sendall('{} Server: {} has joined the chat. say Hi!'.format(messageProtocol.SYS_MSG, self.name).encode('ascii'))
         print("\rReady! Leave the chatroom anytime by typing 'Quit'\n")
         print('{}: '.format(self.name), end='')
 
@@ -191,19 +196,21 @@ class Client:
     def send(self, textInput):
 
         message = textInput.get()
+
         textInput.delete(0, tk.END)
         self.messages.insert(tk.END, '{}: {}'.format(self.name, message))
 
 
         if message == "Quit":
-            self.sock.sendall('Server: {} has left the chat.' .format(self.name).encode('ascii'))
+            self.sock.sendall('{} Server: {} has left the chat.' .format(messageProtocol.SYS_MSG, self.name).encode('ascii'))
 
             print('\nQuitting...')
             self.sock.close()
             os.exit(0)
 
         else:
-            self.sock.sendall('{}: {}'.format(self.name, message).encode('ascii'))
+            encode_message = messageProtocol.encode(message)
+            self.sock.sendall('{}: {}'.format(self.name, encode_message).encode('ascii'))
 
 
 def main(host, port):
