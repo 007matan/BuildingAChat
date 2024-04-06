@@ -2,7 +2,7 @@ import threading
 import socket
 import argparse
 import os
-from messageProtocol import messageProtocol
+from MessageProtocol import MessageProtocol
 
 """
 Class Server:
@@ -71,7 +71,6 @@ class Server(threading.Thread):
         while True:
             sc, sockname = sock.accept()
             print(f"New connection from {sc.getpeername()} to {sc.getsockname()}")
-
             server_socket = ServerSocket(sc, sockname, self)
 
             server_socket.start()
@@ -147,7 +146,7 @@ class ServerSocket(threading.Thread):
                 message = self.sc.recv(1024).decode('ascii')
                 if message:
                     print(f"{self.sockname} says {message}")
-                    self.server.broadcast(messageProtocol.decode(message), self.sockname)
+                    self.server.broadcast(MessageProtocol.decode(message), self.sockname)
                 else:
                     print(f"Connection with client {self.sockname} forcibly closed.")
                     self.sc.close()

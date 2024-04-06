@@ -1,7 +1,8 @@
-class messageProtocol:
-    HEADER_LENGTH = 5
-    PROTOCOL_ERR = "PROTOCOL_ERR"
-    SYS_MSG = "SYS_MSG"
+class MessageProtocol:
+    HEADER_LENGTH = 5  # max message length 99999
+    CHARS_IN_ROW = 30  # amount of chars in each row in chat
+    PROTOCOL_ERR = "PROTOCOL_ERR"  # error sign from the protocol
+    SYS_MSG = "SYS_MSG"  # signing messages from the system
 
     """
            Encodes a message by adding a header that contains the message's length.
@@ -10,7 +11,7 @@ class messageProtocol:
     """
     @staticmethod
     def encode(message: str) -> str:
-        header = f"{len(message):0{messageProtocol.HEADER_LENGTH}}"
+        header = f"{len(message):0{MessageProtocol.HEADER_LENGTH}}"
         return f"{header}{message}"
 
     """
@@ -25,14 +26,29 @@ class messageProtocol:
     def decode(encoded_message: str) -> str:
         prefix_space = encoded_message.split(" ", 1)[0]
         suffix_space = encoded_message.split(" ", 1)[1]
-        if prefix_space != messageProtocol.SYS_MSG:
-            header = suffix_space[:messageProtocol.HEADER_LENGTH]
-            message = suffix_space[messageProtocol.HEADER_LENGTH:]
+        if prefix_space != MessageProtocol.SYS_MSG:
+            header = suffix_space[:MessageProtocol.HEADER_LENGTH]
+            message = suffix_space[MessageProtocol.HEADER_LENGTH:]
             if len(message) == int(header):
                 return prefix_space + " " + message
             else:
-                return messageProtocol.PROTOCOL_ERR
+                return MessageProtocol.PROTOCOL_ERR
         else:
             return suffix_space
 
 
+    """
+    @staticmethod
+    def splitLines(message: str) -> str:
+        words = message.split()
+        lines = []
+        current_line = words.pop(0)
+        for word in words:
+            if len(current_line) + len(word) + 1 <= MessageProtocol.CHARS_IN_ROW:
+                current_line += ' ' + word
+            else:
+                lines.append(current_line)
+                current_line = word
+        lines.append(current_line)
+        return '\n'.join(lines)
+    """
