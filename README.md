@@ -1,8 +1,8 @@
-# Python Chat System 💻
+## Python Chat System 💻
 
 
 
-## Overview 📜
+# Overview 📜
 
 The Python Chat System project is an educational endeavor designed to showcase the development of a networked chat application using Python.
 It allows for real-time communication between multiple clients through a central server, emphasizing the practical application of networking concepts,
@@ -13,7 +13,7 @@ concurrency, and protocol design in Python.
 
 
 
-## Project Structure 🏗️
+# Project Structure 🏗️
 
 
 ## Server 🖥️
@@ -37,7 +37,7 @@ Unit tests are included to validate the functionality of the server, client, and
 These tests are crucial for ensuring reliability and stability of the chat system under various scenarios.
 
 
-## Technologies Used 🛠️
+# Technologies Used 🛠️
 
 Python: The core language used for the project, renowned for its simplicity and powerful standard library.
 Socket Programming: For creating network connections between the server and clients.
@@ -45,7 +45,7 @@ Threading: To enable concurrent operations within the client for simultaneous se
 select.select(): Utilized by the server for non-blocking I/O operations, allowing it to handle multiple client connections efficiently.
 
 
-## Usage 🚀
+# Usage 🚀
 
 To use the Buildin A Chat App, follow these steps:
 1. Clone the repository to your local machine.
@@ -56,39 +56,39 @@ To use the Buildin A Chat App, follow these steps:
 Engage in Chat: Repeat step 4 for connecting multiple clients and start chatting!
 
 
-## File Descriptions 🗂️
+# File Descriptions 🗂️
 
 
-# 'server.py'
+## 'server.py'
 
 The heart of the chat system, server.py, manages client connections, orchestrates message broadcasting,
 and ensures seamless communication across all active clients. It uses non-blocking sockets and the select module for efficient network I/O,
 handling multiple concurrent client connections without compromising performance.
-# Development Time: 3 hours
+Development Time: 3 hours
 
 
-# 'client.py' 
+## 'client.py' 
 
 client.py acts as the interface for users to connect to the chat server, send messages, and receive updates from other participants.
 It employs threading to manage simultaneous reading and writing operations, allowing users to engage in lively, uninterrupted chat sessions.
-# Development Time: 2 hours
+Development Time: 2 hours
 
 
-# messageProtocol.py 
+## messageProtocol.py 
 
 This module defines the messaging protocol, including message formatting, encoding, and parsing logic.
 It ensures that messages are correctly framed with a fixed-length header specifying the message length, facilitating accurate message transmission and reception.
-# Development Time: 30 minutes
+Development Time: 30 minutes
 
 
-# tests.py 
+## tests.py 
 
 The tests.py file contains unit tests for the server, client, and message protocol functionalities.
 These tests are crucial for verifying the system's reliability and correctness under various conditions, providing a safety net for further development and refactoring.
-# Development Time: 30 minutes
+Development Time: 30 minutes
 
 
-## Final Note 📝
+# Final Note 📝
 
 As part of the work I was required to create an AI Client. The AI client will connect to the server and respond to the chat.
 Unfortunately, after many hours I did not succeed in realizing this part of the project. I will continue in my spare time to learn more about ai api integration
